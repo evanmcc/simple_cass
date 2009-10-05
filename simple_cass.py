@@ -10,6 +10,7 @@ from cassandra import Cassandra
 from cassandra.ttypes import NotFoundException, ColumnPath, \
     ColumnParent, SlicePredicate, SliceRange
 from cassandra.ttypes import ConsistencyLevel as clevel
+import types
 
 class cass_con_error(Exception):
     pass
@@ -41,7 +42,7 @@ class cass_con:
                const_level = clevel.ONE):
 
         for v in col.items():
-            if type(v[1]) == type(str()):
+            if type(v[1]) == types.StringType:
                 col_name, val = v
                 cpath = ColumnPath(column_fam, column=col_name)
                 if not ts:
@@ -53,7 +54,7 @@ class cass_con:
                 except Exception:
                     raise
                 ts = None
-            elif type(v[1]) == type(dict()):
+            elif type(v[1]) == types.DictType:
                 scol, cols = v
                 for t in cols.items():
                     col_name, val = t 
